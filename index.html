@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!--
+    🎯 GOAL: A clean, single‑page personal website like wongmjane.com
+    You can learn HTML/CSS by tweaking this one file. Open it in a browser.
+
+    HOW TO USE THIS FILE
+    1) Replace placeholder text (Your Name, City, links, email).
+    2) Save as index.html and open in a browser (double‑click the file).
+    3) Add an image named avatar.jpg next to this file for the photo.
+    4) When you're happy, deploy via GitHub Pages (see steps in chat).
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name — Home</title>
+  <meta name="description" content="Short one‑line bio or tagline about you." />
+  <!-- Optional: social sharing cards (edit or remove) -->
+  <meta property="og:title" content="Your Name" />
+  <meta property="og:description" content="Short one‑line bio or tagline about you." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    /* === Basic reset + theme tokens === */
+    :root {
+      --maxw: 720px;          /* content width */
+      --pad: 24px;            /* page padding */
+      --radius: 999px;        /* round avatar */
+      --text: #111;           /* text color (light) */
+      --bg: #fff;             /* background (light) */
+      --muted: #555;          /* secondary text */
+      --link: currentColor;   /* link inherits current text color */
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --text:#eee; --bg:#0b0b0b; --muted:#aaa; }
+    }
+
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: grid;
+      place-items: center;   /* centers the main card */
+    }
+
+    /* === Layout === */
+    main {
+      width: min(100%, var(--maxw));
+      padding: var(--pad);
+    }
+
+    header { margin: 0 0 8px 0; }
+    h1 { font-size: 28px; line-height: 1.2; margin: 12px 0 4px; }
+    .sub { margin: 0; color: var(--muted); }
+
+    /* === Avatar image === */
+    .avatar {
+      width: 96px; height: 96px; border-radius: var(--radius);
+      object-fit: cover; display: block;
+    }
+
+    /* === Links list === */
+    nav ul {
+      list-style: none; padding: 0; margin: 16px 0 0 0;
+      display: flex; flex-wrap: wrap; gap: 12px 16px;
+    }
+    nav a {
+      text-decoration: none;
+      border-bottom: 1px solid currentColor; /* subtle underline */
+    }
+    nav a:focus-visible { outline: 2px dashed; outline-offset: 2px; }
+
+    /* === Footer === */
+    footer { margin-top: 24px; color: var(--muted); font-size: 14px; }
+
+    /* Optional: a simple content block you can use later */
+    .block { margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <!--
+    SEMANTIC STRUCTURE
+    - <header>: your identity
+    - <nav>: key links
+    - <main>: the main content (we keep it very small/minimal)
+    - <footer>: small print
+  -->
+  <main>
+    <header>
+      <!-- Put avatar.jpg next to this file. If you don't want a photo, delete the <img>. -->
+      <img src="avatar.jpg" alt="Portrait of Your Name" class="avatar" />
+      <h1>Your Name</h1>
+      <p class="sub">City, Country · Short role (e.g., Software/Engineering)</p>
+    </header>
+
+    <nav aria-label="Primary">
+      <ul>
+        <!--
+          TIP: change link text and href values. Keep mailto for email.
+          If you want links to open in a new tab, add: target="_blank" rel="noopener noreferrer"
+        -->
+        <li><a href="mailto:you@example.com">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/yourprofile">LinkedIn</a></li>
+        <li><a href="https://github.com/yourusername">GitHub</a></li>
+        <li><a href="https://x.com/yourhandle">X</a></li>
+        <li><a href="https://yourblog.example.com">Blog</a></li>
+        <!-- Add or remove links as you like -->
+      </ul>
+    </nav>
+
+    <!-- Optional content block (start with just a sentence) -->
+    <section class="block" aria-label="About">
+      <p>
+        👋 Hello! I'm <strong>Your Name</strong>. I enjoy building things with Python and C,
+        and I'm learning web development. This site is intentionally minimal and fast.
+      </p>
+    </section>
+
+    <!--
+      More optional blocks you can enable later:
+
+    <section class="block" aria-label="Projects">
+      <h2>Projects</h2>
+      <ul>
+        <li><a href="#">Project One</a> — one‑line description.</li>
+        <li><a href="#">Project Two</a> — one‑line description.</li>
+      </ul>
+    </section>
+
+    <section class="block" aria-label="Writing">
+      <h2>Writing</h2>
+      <p>Move your posts to a separate blog and link them above to keep this page simple.</p>
+    </section>
+
+    -->
+
+    <footer>
+      <small>
+        © <span id="year"></span> Your Name. • Last updated <time id="updated" datetime="">today</time>.
+      </small>
+    </footer>
+  </main>
+
+  <script>
+    // Tiny progressive enhancement: auto-fill current year & today's date
+    // (If you prefer zero JS, you can delete this script.)
+    const now = new Date();
+    document.getElementById('year').textContent = now.getFullYear();
+    const t = document.getElementById('updated');
+    const iso = now.toISOString().split('T')[0];
+    t.dateTime = iso;
+    t.textContent = now.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+  </script>
+</body>
+</html>
