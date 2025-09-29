@@ -144,22 +144,24 @@
 
     <footer>
       <small>
-        © <span id="year"></span> Arran Rai. • Last updated <time id="updated" datetime="">today</time>.
+        © <span id="year">2025</span> Your Name • Last updated 
+        <time id="updated" datetime="2025-09-29">Sep 29, 2025</time>
+        (<span id="daysago"></span> days ago).
       </small>
     </footer>
   </main>
 
   <script>
-    // Tiny progressive enhancement: auto-fill current year & today's date
-    // (If you prefer zero JS, you can delete this script.)
-    const now = new Date();
-    document.getElementById('year').textContent = now.getFullYear();
-    const t = document.getElementById('updated');
-    const iso = now.toISOString().split('T')[0];
-    t.dateTime = iso;
-    t.textContent = now.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const updatedEl = document.getElementById('updated');
+    const updatedDate = new Date(updatedEl.dateTime);
+    const today = new Date();
+    const diffTime = today - updatedDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    document.getElementById('daysago').textContent = diffDays;
   </script>
 </body>
 </html>
+
 
 
