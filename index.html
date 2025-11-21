@@ -209,13 +209,29 @@
   </main>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const updatedEl = document.getElementById('updated');
-    const updatedDate = new Date(updatedEl.dateTime);
-    const today = new Date();
-    const diffTime = today - updatedDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    document.getElementById('daysago').textContent = diffDays;
+    async function updateLastModified() {
+      try {
+        const response = await fetch('https://api.github.com/repos/arranrai/arranrai.github.io/commits?per_page=1');
+        const commits = await response.json();
+        const lastCommitDate = new Date(commits[0].commit.author.date);
+        
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = lastCommitDate.toLocaleDateString('en-US', options);
+        const isoDate = lastCommitDate.toISOString().split('T')[0];
+        
+        document.getElementById('updated').textContent = formattedDate;
+        document.getElementById('updated').setAttribute('datetime', isoDate);
+        
+        const today = new Date();
+        const diffTime = today - lastCommitDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('daysago').textContent = diffDays;
+      } catch (error) {
+        console.error('Failed to fetch last commit date:', error);
+      }
+    }
+    
+    updateLastModified();
   </script>
 
   
@@ -244,6 +260,7 @@
   
 </body>
 </html>
+
 
 
 
