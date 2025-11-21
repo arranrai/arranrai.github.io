@@ -210,24 +210,38 @@
 
   <script>
     async function updateLastModified() {
+      // Show cached date immediately if available
+      const cachedDate = localStorage.getItem('lastCommitDate');
+      const cachedDays = localStorage.getItem('lastCommitDays');
+      
+      if (cachedDate) {
+        document.getElementById('updated').textContent = cachedDate;
+        document.getElementById('daysago').textContent = cachedDays;
+      }
+      
+      // Fetch fresh data
       try {
-        const response = await fetch('https://api.github.com/repos/arranrai/arranrai.github.io/commits?per_page=1'); // Gets most recent commit for github website.
-        const commits = await response.json(); // commits now has the most recent commit info.
-        const lastCommitDate = new Date(commits[0].commit.author.date); // Takes first commit in array, and gets the date of it
+        const response = await fetch('https://api.github.com/repos/arranrai/arranrai.github.io/commits?per_page=1');
+        const commits = await response.json();
+        const lastCommitDate = new Date(commits[0].commit.author.date);
         
-        const date_options = { year: 'numeric', month: 'short', day: 'numeric' }; // Sets options for how we want date formatting, Nov instead of November
-        const formattedDate = lastCommitDate.toLocaleDateString('en-US', date_options); // Result will look like: "Nov 21, 2024"
-        const isoDate = lastCommitDate.toISOString().split('T')[0]; // Splits the date and time variable and only stores the date
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = lastCommitDate.toLocaleDateString('en-US', options);
+        const isoDate = lastCommitDate.toISOString().split('T')[0];
         
-        document.getElementById('updated').textContent = formattedDate; //Sets
+        document.getElementById('updated').textContent = formattedDate;
         document.getElementById('updated').setAttribute('datetime', isoDate);
         
-        const today = new Date(); // Created a new object named today with the current date and time.
-        const diffTime = today - lastCommitDate; // Date subtraction results in the difference in milliseconds.
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Concerts milliseconds to days
-        document.getElementById('daysago').textContent = diffDays; // Changed website diffDays to the new one calculated
+        const today = new Date();
+        const diffTime = today - lastCommitDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('daysago').textContent = diffDays;
+        
+        // Cache the results
+        localStorage.setItem('lastCommitDate', formattedDate);
+        localStorage.setItem('lastCommitDays', diffDays);
       } catch (error) {
-        console.error('Failed to fetch last commit date:', error); // If anything fails in the try block, the website will print an error instead of the script crashing.
+        console.error('Failed to fetch last commit date:', error);
       }
     }
     
@@ -260,6 +274,7 @@
   
 </body>
 </html>
+
 
 
 
