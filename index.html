@@ -82,6 +82,59 @@
 
     /* Optional: a simple content block you can use later */
     .block { margin-top: 24px; }
+
+    /*-- ----- START OF CSS DARK/LIGHT THEME CODE ----------------- */
+    :root {
+      /* DEFAULT VALUES FOR LIGHT THEME */
+      --bg-color: #fff;
+      --text-color: #000;
+      --link-color: #0066cc;
+      --border-color: #ddd;
+    }
+
+    /* DEFAULT VALUES FOR DARK THEME */
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #e0e0e0;
+      --link-color: #66b3ff;
+      --border-color: #444;
+    }
+
+    /* Applying the colour values to variables on webpage */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  
+    a {
+      color: var(--link-color); /* Applying the link colour value to be set to the corresponding theme */
+    }
+
+    /* Setting up the COLOUR THEME BUTTON */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+  
+    .theme-toggle:hover {
+      /* opacity: 0.8; */
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    /* ----- END OF CSS DARK/LIGHT THEME CODE ----------------- */
+    
   </style>
 </head>
 
@@ -93,7 +146,11 @@
     - <main>: the main content (we keep it very small/minimal)
     - <footer>: small print
   -->
-  <main>
+
+  <!-- Creates a button using defined "theme-toggle" above, gives it a uniqueID "themeToggle" and initial text is "Dark" --!>
+  <button class="theme-toggle" id="themeToggle">Dark</button> 
+  
+  <main class="page">
     <header>
       <!-- Put avatar.jpg next to this file. If you don't want a photo, delete the <img>. -->
       <img src="avatar.jpg" alt="Portrait of Arran Rai" class="avatar" />
@@ -145,23 +202,87 @@
     <footer>
       <small>
         © <span id="year">2025</span> Arran Rai • Last updated 
-        <time id="updated" datetime="2025-09-29">Sep 29, 2025</time>
+        <time id="updated"></time>
         (<span id="daysago"></span> days ago).
       </small>
     </footer>
   </main>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const updatedEl = document.getElementById('updated');
-    const updatedDate = new Date(updatedEl.dateTime);
-    const today = new Date();
-    const diffTime = today - updatedDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    document.getElementById('daysago').textContent = diffDays;
+    async function updateLastModified() {
+      // Show cached date immediately if available
+      const cachedDate = localStorage.getItem('lastCommitDate');
+      const cachedDays = localStorage.getItem('lastCommitDays');
+      
+      if (cachedDate) {
+        document.getElementById('updated').textContent = cachedDate;
+        document.getElementById('daysago').textContent = cachedDays;
+      }
+      
+      // Fetch fresh data
+      try {
+        const response = await fetch('https://api.github.com/repos/arranrai/arranrai.github.io/commits?per_page=1');
+        const commits = await response.json();
+        const lastCommitDate = new Date(commits[0].commit.author.date);
+        
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = lastCommitDate.toLocaleDateString('en-US', options);
+        const isoDate = lastCommitDate.toISOString().split('T')[0];
+        
+        document.getElementById('updated').textContent = formattedDate;
+        document.getElementById('updated').setAttribute('datetime', isoDate);
+        
+        const today = new Date();
+        const diffTime = today - lastCommitDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('daysago').textContent = diffDays;
+        
+        // Cache the results
+        localStorage.setItem('lastCommitDate', formattedDate);
+        localStorage.setItem('lastCommitDays', diffDays);
+      } catch (error) {
+        console.error('Failed to fetch last commit date:', error);
+      }
+    }
+    
+    updateLastModified();
   </script>
+
+  
+  <script> 
+    /* ----- START OF JSS DARK/LIGHT THEME CODE ----------------- */
+    const themeToggle = document.getElementById('themeToggle'); // Used to assign theme toggle button uniqueID set above to a var
+    const html = document.documentElement; // Creates a html element
+  
+    // Check for saved theme preference from last visit or default to light
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? 'Light' : 'Dark'; // Sets the text based on the current theme, if
+    //theme is light, text will read dark and vice versa using shorthand if else
+  
+    // IMPLEMENT BUTTON CLICK FUNTIONALITY
+    themeToggle.addEventListener('click', () => {      // When button is clicked....
+      const theme = html.getAttribute('data-theme');   // get current theme and store in variable theme
+      const newTheme = theme === 'dark' ? 'light' : 'dark';    // sets newTheme to be opposite to current theme
+      
+      html.setAttribute('data-theme', newTheme);  // Changes html data theme to the new theme, changing website colours
+      localStorage.setItem('theme', newTheme);    // Changes the theme in local storage for local saving theme
+      themeToggle.textContent = newTheme === 'dark' ? 'Light' : 'Dark';    // Changes the text in the button when button is clicked
+    });
+    /*- ----- END OF JSS DARK/LIGHT THEME CODE ----------------- */
+  </script>
+  
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 
