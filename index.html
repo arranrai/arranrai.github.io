@@ -217,8 +217,9 @@
     document.getElementById('daysago').textContent = diffDays;
   </script>
 
-  /!-- ----- START OF  DARK/LIGHT THEME CODE ----------------- --!/
-  <script>
+  
+  <script> 
+    /* ----- START OF  DARK/LIGHT THEME CODE ----------------- */
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
   
@@ -235,10 +236,12 @@
       localStorage.setItem('theme', newTheme);
       themeToggle.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
     });
+    /*- ----- END OF  DARK/LIGHT THEME CODE ----------------- */
   </script>
-  /!-- ----- END OF  DARK/LIGHT THEME CODE ----------------- --!/
+  
 </body>
 </html>
+
 
 
 
