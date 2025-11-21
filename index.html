@@ -83,7 +83,7 @@
     /* Optional: a simple content block you can use later */
     .block { margin-top: 24px; }
 
-    /*-- ----- START OF  DARK/LIGHT THEME CODE ----------------- */
+    /*-- ----- START OF CSS DARK/LIGHT THEME CODE ----------------- */
     :root {
       /* DEFAULT VALUES FOR LIGHT THEME */
       --bg-color: #fff;
@@ -133,7 +133,7 @@
       transform: scale(1.05);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
-    /* ----- END OF  DARK/LIGHT THEME CODE ----------------- */
+    /* ----- END OF CSS DARK/LIGHT THEME CODE ----------------- */
     
   </style>
 </head>
@@ -146,8 +146,9 @@
     - <main>: the main content (we keep it very small/minimal)
     - <footer>: small print
   -->
-  
-  <button class="theme-toggle" id="themeToggle">Dark</button>
+
+  <!-- Creates a button using defined "theme-toggle" above, gives it a uniqueID "themeToggle" and initial text is "Dark" --!>
+  <button class="theme-toggle" id="themeToggle">Dark</button> 
   
   <main class="page">
     <header>
@@ -219,28 +220,31 @@
 
   
   <script> 
-    /* ----- START OF  DARK/LIGHT THEME CODE ----------------- */
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
+    /* ----- START OF JSS DARK/LIGHT THEME CODE ----------------- */
+    const themeToggle = document.getElementById('themeToggle'); // Used to assign theme toggle button uniqueID set above to a var
+    const html = document.documentElement; // Creates a html element
   
-    // Check for saved theme preference or default to light
+    // Check for saved theme preference from last visit or default to light
     const currentTheme = localStorage.getItem('theme') || 'light';
     html.setAttribute('data-theme', currentTheme);
-    themeToggle.textContent = currentTheme === 'dark' ? 'Light' : 'Dark';
+    themeToggle.textContent = currentTheme === 'dark' ? 'Light' : 'Dark'; // Sets the text based on the current theme, if
+    //theme is light, text will read dark and vice versa using shorthand if else
   
-    themeToggle.addEventListener('click', () => {
-      const theme = html.getAttribute('data-theme');
-      const newTheme = theme === 'dark' ? 'light' : 'dark';
+    // IMPLEMENT BUTTON CLICK FUNTIONALITY
+    themeToggle.addEventListener('click', () => {      // When button is clicked....
+      const theme = html.getAttribute('data-theme');   // get current theme and store in variable theme
+      const newTheme = theme === 'dark' ? 'light' : 'dark';    // sets newTheme to be opposite to current theme
       
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggle.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+      html.setAttribute('data-theme', newTheme);  // Changes html data theme to the new theme, changing website colours
+      localStorage.setItem('theme', newTheme);    // Changes the theme in local storage for local saving theme
+      themeToggle.textContent = newTheme === 'dark' ? 'Light' : 'Dark';    // Changes the text in the button when button is clicked
     });
-    /*- ----- END OF  DARK/LIGHT THEME CODE ----------------- */
+    /*- ----- END OF JSS DARK/LIGHT THEME CODE ----------------- */
   </script>
   
 </body>
 </html>
+
 
 
 
