@@ -83,14 +83,16 @@
     /* Optional: a simple content block you can use later */
     .block { margin-top: 24px; }
 
-    /* ----- START OF  DARK/LIGHT THEME CODE ----------------- */
+    /*-- ----- START OF  DARK/LIGHT THEME CODE ----------------- */
     :root {
+      /* DEFAULT VALUES FOR LIGHT THEME */
       --bg-color: #fff;
       --text-color: #000;
       --link-color: #0066cc;
       --border-color: #ddd;
     }
 
+    /* DEFAULT VALUES FOR DARK THEME */
     [data-theme="dark"] {
       --bg-color: #1a1a1a;
       --text-color: #e0e0e0;
@@ -98,6 +100,7 @@
       --border-color: #444;
     }
 
+    /* Applying the colour values to variables on webpage */
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -105,9 +108,10 @@
     }
   
     a {
-      color: var(--link-color);
+      color: var(--link-color); /* Applying the link colour value to be set to the corresponding theme */
     }
-  
+
+    /* Setting up the COLOUR THEME BUTTON */
     .theme-toggle {
       position: fixed;
       top: 20px;
@@ -125,7 +129,9 @@
     }
   
     .theme-toggle:hover {
-      opacity: 0.8;
+      /* opacity: 0.8; */
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     /* ----- END OF  DARK/LIGHT THEME CODE ----------------- */
     
@@ -211,7 +217,7 @@
     document.getElementById('daysago').textContent = diffDays;
   </script>
 
-  /* ----- START OF  DARK/LIGHT THEME CODE ----------------- */
+  /!-- ----- START OF  DARK/LIGHT THEME CODE ----------------- --!/
   <script>
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
@@ -230,9 +236,10 @@
       themeToggle.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
     });
   </script>
-  /* ----- END OF  DARK/LIGHT THEME CODE ----------------- */
+  /!-- ----- END OF  DARK/LIGHT THEME CODE ----------------- --!/
 </body>
 </html>
+
 
 
 
